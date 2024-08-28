@@ -11,11 +11,11 @@ import lombok.EqualsAndHashCode;
 
 @Entity
 @Table(name = "deliveryTypes")
-public class DaoDeliveryType {
-	
+public class DaoDeliveryType extends BaseEntity {
+
 	@Column(nullable = false)
 	private String type;
-	
+
 	@Column(nullable = false)
 	private Double baseFee = 0.0;
 }

@@ -19,7 +19,7 @@ import lombok.EqualsAndHashCode;
 public class DaoDelCoHour extends BaseEntity {
 
 	@Enumerated(EnumType.ORDINAL)
-	@Column(nullable = false, columnDefinition = "int4 default 0")
+	@Column(nullable = false)
 	private DayOfWeek dayOfWeek; // 0-Monday
 
 	@Column(nullable = false)
