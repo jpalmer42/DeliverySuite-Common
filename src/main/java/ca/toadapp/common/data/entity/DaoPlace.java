@@ -44,5 +44,4 @@ public class DaoPlace extends BaseEntity {
 	@Column(nullable= false, columnDefinition = "bool default 'false'")
 	private Boolean onAccount = false;
 
-
 }

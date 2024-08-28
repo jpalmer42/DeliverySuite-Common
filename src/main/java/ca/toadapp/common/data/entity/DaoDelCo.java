@@ -4,8 +4,10 @@ import java.util.Collection;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import ca.toadapp.common.data.ConverterLongCollection;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -29,6 +31,9 @@ public class DaoDelCo extends BaseEntity {
 	private String address;
 	private String phone;
 
+	@Column(nullable= false, columnDefinition = "bool default 'false'")
+	private Boolean hasDeliveryOnDemand = false;
+
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "dispatcherId")
@@ -39,10 +44,13 @@ public class DaoDelCo extends BaseEntity {
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "delCoId")
-	Collection<DaoDelCoLocation> serviceAreas;
+	private Collection<DaoDelCoLocation> serviceAreas;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "delCoId")
-	Collection<DaoDelCoHour> hours;
+	private Collection<DaoDelCoHour> hours;
+
+	@Convert(converter = ConverterLongCollection.class)
+	private Collection<Long> deliveryTypes;
 
 }
