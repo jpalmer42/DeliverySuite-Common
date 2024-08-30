@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -17,19 +18,19 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 
 @Entity
-@Table(name = "places")
-public class DaoPlace extends BaseEntity {
+@Table(name = "placesPickup")
+public class DaoPlacePickup extends BaseEntityDate {
 	
-	@Column(unique = true)
+	@Id
 	private String placeId; // Google Place Id
-	
+
 	private String name;
 	private String address;
 	private String phone;
 
 	private Double latitude;
 	private Double longitude;
-
+	
 	// ===============================================================
 	// Pickup info
 	@JsonIgnore

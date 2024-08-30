@@ -25,16 +25,26 @@ import lombok.EqualsAndHashCode;
 @Table(name = "items")
 public class DaoItem extends BaseEntity {
 
-	private String pickupPlaceId; // Google Place ID
-	private String pickupName;
-	private String pickupAddress;
-	private String pickupPhone;
-	private String pickupInstructions;
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "pickupPlaceId")
+	private DaoPlacePickup pickupPlace;
 
-	private String dropoffPlaceId; // Google Place ID
-	private String dropoffName;
-	private String dropoffAddress;
-	private String dropoffPhone;
+	@Column(name = "pickupPlaceId", updatable = false, insertable = false)
+	private String pickupPlaceId;
+
+	private String pickupAddress2;
+	private String pickupInstructions;
+	
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "dropoffPlaceId")
+	private DaoPlaceDropoff dropoffPlace;
+
+	@Column(name = "dropoffPlaceId", updatable = false, insertable = false)
+	private String dropoffPlaceId;
+
+	private String dropoffAddress2;
 	private String dropoffInstructions;
 
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -69,6 +79,7 @@ public class DaoItem extends BaseEntity {
 
 	@Column(nullable = false)
 	private Double payloadCost = 0.0;
+	
 	@MapKeyEnumerated(EnumType.STRING)
 	private PaymentTypes payloadPaymentType = PaymentTypes.unknown;
 
