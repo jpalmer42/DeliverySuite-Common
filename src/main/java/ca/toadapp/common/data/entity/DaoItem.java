@@ -10,10 +10,10 @@ import ca.toadapp.common.data.enumeration.PaymentTypes;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapKeyEnumerated;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,6 +25,8 @@ import lombok.EqualsAndHashCode;
 @Table(name = "items")
 public class DaoItem extends BaseEntity {
 
+	// ===============================================================
+	// Pickup Details
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "pickupPlaceId")
@@ -36,6 +38,8 @@ public class DaoItem extends BaseEntity {
 	private String pickupAddress2;
 	private String pickupInstructions;
 	
+	// ===============================================================
+	// Dropoff Details
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "dropoffPlaceId")
@@ -52,6 +56,8 @@ public class DaoItem extends BaseEntity {
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	private LocalDateTime requestedDropoffTime;
 
+	// ===============================================================
+	// Logistics
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "deliveryCompanyId")
@@ -72,25 +78,27 @@ public class DaoItem extends BaseEntity {
 	private Integer dropoffDistance; // Distance from pickup to dropoff
 
 	@Column(nullable = false, columnDefinition = "bool default 'false'")
-	private Boolean deliveryPaidByAccount = false;
-
-	@Column(nullable = false, columnDefinition = "bool default 'false'")
 	private Boolean autoAssignDriver = false;
 
+	// ===============================================================
+	// Transaction Info
+	@Column(nullable = false, columnDefinition = "bool default 'false'")
+	private Boolean deliveryPaidByAccount = false;
+
 	@Column(nullable = false)
-	private Double payloadCost = 0.0;
+	private Double goodsCost = 0.0;
 	
-	@MapKeyEnumerated(EnumType.STRING)
-	private PaymentTypes payloadPaymentType = PaymentTypes.unknown;
+	@Enumerated(EnumType.STRING)
+	private PaymentTypes goodsPaymentType = PaymentTypes.unknown;
 
 	@Column(nullable = false)
 	private Double deliveryFee = 0.0;
-	@MapKeyEnumerated(EnumType.STRING)
+	@Enumerated(EnumType.STRING)
 	private PaymentTypes deliveryPaymentType = PaymentTypes.unknown;
 
 	@Column(nullable = false)
 	private Double deliveryTip = 0.0;
-	@MapKeyEnumerated(EnumType.STRING)
+	@Enumerated(EnumType.STRING)
 	private PaymentTypes deliveryTipPaymentType = PaymentTypes.unknown;
 
 	// ===============================================================
