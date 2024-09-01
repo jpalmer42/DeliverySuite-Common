@@ -13,6 +13,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -31,26 +32,31 @@ public class DaoDelCo extends BaseEntity {
 	private String address;
 	private String phone;
 
-	@Column(nullable= false, columnDefinition = "bool default 'false'")
+	@Column(nullable = false, columnDefinition = "bool default 'false'")
 	private Boolean hasDeliveryOnDemand = false;
 
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "dispatcherId")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "dispatcherId", updatable = false, insertable = false)
 	private DaoAgent dispatcher;
 
 	@Column(name = "dispatcherId", updatable = false, insertable = false)
 	private Long dispatcherId;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "delCoId")
+	@JoinColumn(name = "delCoId", updatable = false, insertable = false)
 	private Collection<DaoDelCoLocation> serviceAreas;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "delCoId")
+	@JoinColumn(name = "delCoId", updatable = false, insertable = false)
 	private Collection<DaoDelCoHour> hours;
 
 	@Convert(converter = ConverterLongCollection.class)
 	private Collection<Long> deliveryTypes;
+
+	@JsonIgnore
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "brandingId")
+	private DaoDelCoBranding branding;
 
 }

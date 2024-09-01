@@ -43,6 +43,6 @@ public class DaoPlacePickup extends BaseEntityDate {
 	private Long deliveryCompanyId;
 
 	@Column(nullable= false, columnDefinition = "bool default 'false'")
-	private Boolean onAccount = false;
+	private Boolean onAccount = false;	// Delivery fee is paid by pickup location.
 
 }

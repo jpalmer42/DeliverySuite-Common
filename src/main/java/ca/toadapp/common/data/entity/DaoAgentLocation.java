@@ -19,8 +19,8 @@ import lombok.EqualsAndHashCode;
 public class DaoAgentLocation extends BaseEntity {
 
 	@JsonIgnore
-	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "agentId")
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "agentId", updatable = false, insertable = false)
 	private DaoAgent agent;
 
 	@Column(name = "agentId", updatable = false, insertable = false)

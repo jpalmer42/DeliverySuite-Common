@@ -37,7 +37,7 @@ public class DaoItem extends BaseEntity {
 
 	private String pickupAddress2;
 	private String pickupInstructions;
-	
+
 	// ===============================================================
 	// Dropoff Details
 	@JsonIgnore
@@ -80,23 +80,28 @@ public class DaoItem extends BaseEntity {
 	@Column(nullable = false, columnDefinition = "bool default 'false'")
 	private Boolean autoAssignDriver = false;
 
+	@Column(nullable = false, columnDefinition = "bool default 'false'")
+	private Boolean requiresSmartServe = false;	// There is a controlled substance in this delivery. (Smoke, Alcohol, Drugs) 
+
 	// ===============================================================
 	// Transaction Info
 	@Column(nullable = false, columnDefinition = "bool default 'false'")
-	private Boolean deliveryPaidByAccount = false;
+	private Boolean deliveryPaidByAccount = false; // Only copied from pickup place if Delivery Companies are the same.
 
-	@Column(nullable = false)
-	private Double goodsCost = 0.0;
-	
+	@Column(nullable = false, columnDefinition = "float default '0.00'")
+	private Double goodsCost = 0.0; // If not prepaid, then dropoff place has to pay this amount on top of the
+									// deliveryFee and agreed deliveryTip.
+
 	@Enumerated(EnumType.STRING)
 	private PaymentTypes goodsPaymentType = PaymentTypes.unknown;
 
-	@Column(nullable = false)
-	private Double deliveryFee = 0.0;
+	@Column(nullable = false, columnDefinition = "float default '0.00'")
+	private Double deliveryFee = 0.0; // Calculated from DeliveryType plus any extra distance beyond the delivery
+										// companies set limits.
 	@Enumerated(EnumType.STRING)
 	private PaymentTypes deliveryPaymentType = PaymentTypes.unknown;
 
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "float default '0.00'")
 	private Double deliveryTip = 0.0;
 	@Enumerated(EnumType.STRING)
 	private PaymentTypes deliveryTipPaymentType = PaymentTypes.unknown;

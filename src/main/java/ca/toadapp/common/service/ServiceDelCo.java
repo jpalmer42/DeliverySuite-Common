@@ -3,6 +3,7 @@ package ca.toadapp.common.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ca.toadapp.common.data.entity.DaoDelCo;
 import ca.toadapp.common.data.repository.RepoDelCo;
 import ca.toadapp.common.data.repository.RepoDelCoHour;
 import ca.toadapp.common.data.repository.RepoDelCoLocation;
@@ -18,5 +19,11 @@ public class ServiceDelCo {
 
 	@Autowired
 	private RepoDelCoLocation contextLocationRepo;
+
+	public DaoDelCo getById(Long deliveryCompanyId) {
+		var response = contextRepo.findById(deliveryCompanyId);
+		
+		return response.orElse(null);
+	}
 
 }

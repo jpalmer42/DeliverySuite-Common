@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -20,19 +21,19 @@ import lombok.EqualsAndHashCode;
 		@UniqueConstraint(columnNames = { "agent_id", "method", "target" }) })
 public class DaoAgentNotification extends BaseEntity {
 
-	@ManyToOne
-	@JoinColumn(name = "agent_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "agentId", updatable = false, insertable = false)
 	private DaoAgent agent;
 
-	@Column(name = "agent_id", updatable = false, insertable = false)
+	@Column(name = "agentId", updatable = false, insertable = false)
 	private Long agentId;
 
 	@Enumerated(EnumType.STRING)
-	@Column(nullable= false)
-	private NotificationTypes method; // SMS, GCM
+	@Column(nullable = false, columnDefinition = "varchar default 'none'")
+	private NotificationTypes method = NotificationTypes.none; // none, sms, gcm
 	private String target; // Cell # or GCM Token
 
-	@Column(nullable= false, columnDefinition = "bool default 'true'")
+	@Column(nullable = false, columnDefinition = "bool default 'true'")
 	private Boolean enabled = true;
 
 }

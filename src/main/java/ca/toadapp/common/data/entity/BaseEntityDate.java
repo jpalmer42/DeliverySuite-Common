@@ -21,7 +21,7 @@ public abstract class BaseEntityDate {
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	private LocalDateTime dateCreated;
 
-	@Column(columnDefinition = "TIMESTAMP", nullable = false)
+	@Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", nullable = false)
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	private LocalDateTime dateUpdated;
 

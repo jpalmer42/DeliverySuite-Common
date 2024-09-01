@@ -39,7 +39,7 @@ public class DaoAgent extends BaseEntity {
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "deliveryCompanyId")
+	@JoinColumn(name = "deliveryCompanyId", updatable = false, insertable = false)
 	private DaoDelCo deliveryCompany;
 
 	@Column(name = "deliveryCompanyId", updatable = false, insertable = false)
