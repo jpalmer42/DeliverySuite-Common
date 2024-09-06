@@ -10,4 +10,6 @@ public interface RepoAgentNotification extends JpaRepository<DaoAgentNotificatio
 
 	Collection<DaoAgentNotification> findAllByAgentId(Long agentId);
 
+	void deleteAllByAgentId(Long agentId);
+
 }

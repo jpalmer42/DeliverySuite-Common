@@ -16,11 +16,16 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
+
+@AllArgsConstructor
+@NoArgsConstructor
 
 @Entity
 @Table(name = "agents")
@@ -38,11 +43,11 @@ public class DaoAgent extends BaseEntity {
 	private String phone;
 
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "deliveryCompanyId", updatable = false, insertable = false)
 	private DaoDelCo deliveryCompany;
 
-	@Column(name = "deliveryCompanyId", updatable = false, insertable = false)
+	@Column(name = "deliveryCompanyId")//, updatable = false, insertable = false)
 	private Long deliveryCompanyId;
 
 	@Column(nullable = false, columnDefinition = "bool default 'false'")

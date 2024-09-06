@@ -17,6 +17,7 @@ public class ConverterLongCollection implements AttributeConverter<Collection<Lo
 			response.append(SPLIT_CHAR);
 			response.append(val.toString());
 		}
+		response.deleteCharAt(0);
 		return response.toString();
 	}
 

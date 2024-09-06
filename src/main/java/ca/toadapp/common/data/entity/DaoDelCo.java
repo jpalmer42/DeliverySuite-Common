@@ -2,8 +2,6 @@ package ca.toadapp.common.data.entity;
 
 import java.util.Collection;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import ca.toadapp.common.data.ConverterLongCollection;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -35,7 +33,6 @@ public class DaoDelCo extends BaseEntity {
 	@Column(nullable = false, columnDefinition = "bool default 'false'")
 	private Boolean hasDeliveryOnDemand = false;
 
-	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "dispatcherId", updatable = false, insertable = false)
 	private DaoAgent dispatcher;
@@ -44,19 +41,18 @@ public class DaoDelCo extends BaseEntity {
 	private Long dispatcherId;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "delCoId", updatable = false, insertable = false)
+	@JoinColumn(name = "delCoId") // Service must read if not present, updatable = false, insertable = false)
 	private Collection<DaoDelCoLocation> serviceAreas;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "delCoId", updatable = false, insertable = false)
+	@JoinColumn(name = "delCoId") // Service must read if not present, updatable = false, insertable = false)
 	private Collection<DaoDelCoHour> hours;
 
 	@Convert(converter = ConverterLongCollection.class)
 	private Collection<Long> deliveryTypes;
 
-	@JsonIgnore
-	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "brandingId")
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "brandingId")// Service must read if not present, updatable = false, insertable = false)
 	private DaoDelCoBranding branding;
 
 }

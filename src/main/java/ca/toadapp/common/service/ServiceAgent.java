@@ -73,8 +73,12 @@ public class ServiceAgent {
 	}
 
 	public Collection<DaoAgentNotification> setNotificationConfig(Collection<DaoAgentNotification> agentNotifications) {
-		var response = contextNotificationRepo.saveAll(agentNotifications);
-		return response;
+		if (!agentNotifications.isEmpty()) {
+			contextNotificationRepo.deleteAllByAgentId(agentNotifications.iterator().next().getAgentId());
+			var response = contextNotificationRepo.saveAll(agentNotifications);
+			return response;
+		}
+		return null;
 	}
 
 }

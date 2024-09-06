@@ -8,11 +8,16 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
+
+@AllArgsConstructor
+@NoArgsConstructor
 
 @Entity
 @Table(name = "agentLocations")
@@ -23,9 +28,9 @@ public class DaoAgentLocation extends BaseEntity {
 	@JoinColumn(name = "agentId", updatable = false, insertable = false)
 	private DaoAgent agent;
 
-	@Column(name = "agentId", updatable = false, insertable = false)
+	@Column(name = "agentId")
 	private Long agentId;
-	
+
 	private Double latitude;
 	private Double longitude;
 }

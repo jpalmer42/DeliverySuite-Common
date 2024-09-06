@@ -16,6 +16,7 @@ public class ConverterAgentRolesCollection implements AttributeConverter<Collect
 			response.append(SPLIT_CHAR);
 			response.append(val.name());
 		}
+		response.deleteCharAt(0);
 		return response.toString();
 	}
 
