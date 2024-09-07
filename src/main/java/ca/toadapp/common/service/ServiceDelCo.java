@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import ca.toadapp.common.data.entity.DaoDelCo;
 import ca.toadapp.common.data.repository.RepoDelCo;
+import jakarta.transaction.Transactional;
 
 @Service
 public class ServiceDelCo {
@@ -53,6 +54,7 @@ public class ServiceDelCo {
 		return contextRepo.save(delCo);
 	}
 
+	@Transactional
 	public void updateDispatcher(Long deliveryCompanyId, Long agentId) {
 		contextRepo.updateDispatcher(deliveryCompanyId, agentId);
 	}

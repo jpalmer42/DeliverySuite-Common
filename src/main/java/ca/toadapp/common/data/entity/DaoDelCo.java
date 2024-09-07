@@ -37,7 +37,7 @@ public class DaoDelCo extends BaseEntity {
 	@JoinColumn(name = "dispatcherId", updatable = false, insertable = false)
 	private DaoAgent dispatcher;
 
-	@Column(name = "dispatcherId", updatable = false, insertable = false)
+	@Column(name = "dispatcherId")//, updatable = false, insertable = false)
 	private Long dispatcherId;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)

@@ -12,6 +12,7 @@ import ca.toadapp.common.data.entity.DaoAgentNotification;
 import ca.toadapp.common.data.repository.RepoAgent;
 import ca.toadapp.common.data.repository.RepoAgentLocation;
 import ca.toadapp.common.data.repository.RepoAgentNotification;
+import jakarta.transaction.Transactional;
 
 @Service
 public class ServiceAgent {
@@ -52,6 +53,7 @@ public class ServiceAgent {
 		return response;
 	}
 
+	@Transactional
 	public void setOnDuty(Long agentId, Boolean dutyStatus) {
 		LocalDateTime ldt = dutyStatus == false ? null : LocalDateTime.now();
 		contextRepo.setDutyStatus(agentId, ldt);
