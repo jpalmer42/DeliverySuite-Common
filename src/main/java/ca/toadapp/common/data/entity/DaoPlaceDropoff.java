@@ -19,12 +19,12 @@ import lombok.NoArgsConstructor;
 public class DaoPlaceDropoff extends BaseEntityDate {
 
 	@Id
-	private String placeId; // Google Place Id
+	private String	placeId;	// Google Place Id
 
-	private String name;
-	private String address;
-	private String phone;
+	private String	name;
+	private String	address;
+	private String	phone;
 
-	private Double latitude;
-	private Double longitude;
+	private Double	latitude;
+	private Double	longitude;
 }

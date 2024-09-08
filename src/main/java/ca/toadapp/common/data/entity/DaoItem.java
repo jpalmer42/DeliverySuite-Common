@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
+import ca.toadapp.common.data.enumeration.DeliveryState;
 import ca.toadapp.common.data.enumeration.PaymentTypes;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,6 +15,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -99,11 +101,11 @@ public class DaoItem extends BaseEntity {
 	private Double			deliveryFee				= 0.0;					// Calculated from DeliveryType plus any extra distance beyond the delivery companies set limits.
 
 	@Enumerated(EnumType.STRING)
-	private PaymentTypes	deliveryPaymentType		= PaymentTypes.unknown; // Only copied from pickup place if Delivery Companies are the same.
+	private PaymentTypes	deliveryPaymentType		= PaymentTypes.unknown;	// Only copied from pickup place if Delivery Companies are the same.
 
 	@Column(nullable = false, columnDefinition = "float default '0.00'")
 	private Double			deliveryTip				= 0.0;
-	
+
 	@Enumerated(EnumType.STRING)
 	private PaymentTypes	deliveryTipPaymentType	= PaymentTypes.unknown;
 
@@ -128,6 +130,9 @@ public class DaoItem extends BaseEntity {
 	private LocalDateTime	onRouteInitial;
 
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
+	private LocalDateTime	onRouteETA;
+
+	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	private LocalDateTime	packagePickedUp;
 
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -136,5 +141,18 @@ public class DaoItem extends BaseEntity {
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	private LocalDateTime	packageDelivered;
 
+	@Transient
+	DeliveryState getDeliveryState() {
+		return requestCancelled != null ? DeliveryState.requestCancelled : //
+				packageDelivered != null ? DeliveryState.packageDelivered : //
+						packageDeliveryETA != null ? DeliveryState.packageDeliveryETA : //
+								packagePickedUp != null ? DeliveryState.packagePickedUp : //
+										onRouteETA != null ? DeliveryState.onRouteETA : //
+												onRouteInitial != null ? DeliveryState.onRouteInitial : //
+														assignmentAcknowledged != null ? DeliveryState.assignmentAcknowledged : //
+																assignmentInitial != null ? DeliveryState.assignmentInitial : //
+																		requestAcknowledged != null ? DeliveryState.requestAcknowledged : //
+																				DeliveryState.requestInitial; //
+	}
 
 }

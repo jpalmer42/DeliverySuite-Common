@@ -6,10 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 
 import ca.toadapp.common.data.entity.DaoDelCo;
 
-public interface RepoDelCo extends JpaRepository<DaoDelCo, Long>{
+public interface RepoDelCo extends JpaRepository<DaoDelCo, Long> {
 
 	@Modifying
-	@Query( "UPDATE DaoDelCo d SET d.dispatcherId = :agentId WHERE d.id = :deliveryCompanyId")
-	void updateDispatcher(Long deliveryCompanyId, Long agentId);
+	@Query("UPDATE DaoDelCo d SET d.dispatcherId = :agentId WHERE d.id = :deliveryCompanyId")
+	void updateDispatcher( Long deliveryCompanyId, Long agentId );
 
 }

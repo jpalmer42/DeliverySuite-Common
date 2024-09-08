@@ -19,8 +19,8 @@ import lombok.NoArgsConstructor;
 public class DaoDeliveryType extends BaseEntity {
 
 	@Column(nullable = false)
-	private String type;
+	private String	type;
 
 	@Column(nullable = false)
-	private Double baseFee = 0.0;
+	private Double	baseFee	= 0.0;
 }

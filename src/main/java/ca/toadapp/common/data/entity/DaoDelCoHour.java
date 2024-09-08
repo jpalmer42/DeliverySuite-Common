@@ -25,12 +25,12 @@ public class DaoDelCoHour extends BaseEntity {
 
 	@Enumerated(EnumType.ORDINAL)
 	@Column(nullable = false)
-	private DayOfWeek dayOfWeek; // 0-Monday
+	private DayOfWeek	dayOfWeek;	// 0-Monday
 
 	@Column(nullable = false)
-	private LocalTime timeStart;
+	private LocalTime	timeStart;
 
 	@Column(nullable = false)
-	private LocalTime timeEnd;
+	private LocalTime	timeEnd;
 
 }

@@ -25,29 +25,29 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "placesPickup")
 public class DaoPlacePickup extends BaseEntityDate {
-	
+
 	@Id
-	private String placeId; // Google Place Id
+	private String		placeId;				// Google Place Id
 
-	private String name;
-	private String address;
-	private String phone;
+	private String		name;
+	private String		address;
+	private String		phone;
 
-	private Double latitude;
-	private Double longitude;
-	
+	private Double		latitude;
+	private Double		longitude;
+
 	// ===============================================================
 	// Pickup info
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, optional = true)
 	@JoinColumn(name = "deliveryCompanyId")
-	private DaoDelCo deliveryCompany;
+	private DaoDelCo	deliveryCompany;
 
 	@JsonInclude(Include.NON_NULL)
 	@Column(name = "deliveryCompanyId", updatable = false, insertable = false)
-	private Long deliveryCompanyId;
+	private Long		deliveryCompanyId;
 
-	@Column(nullable= false, columnDefinition = "bool default 'false'")
-	private Boolean onAccount = false;	// Delivery fee is paid by pickup location.
+	@Column(nullable = false, columnDefinition = "bool default 'false'")
+	private Boolean		onAccount	= false;	// Delivery fee is paid by pickup location.
 
 }

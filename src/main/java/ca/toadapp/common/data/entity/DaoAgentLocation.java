@@ -26,11 +26,11 @@ public class DaoAgentLocation extends BaseEntity {
 	@JsonIgnore
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "agentId", updatable = false, insertable = false)
-	private DaoAgent agent;
+	private DaoAgent	agent;
 
 	@Column(name = "agentId")
-	private Long agentId;
+	private Long		agentId;
 
-	private Double latitude;
-	private Double longitude;
+	private Double		latitude;
+	private Double		longitude;
 }

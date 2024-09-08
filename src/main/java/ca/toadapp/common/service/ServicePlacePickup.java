@@ -17,6 +17,9 @@ public class ServicePlacePickup {
 	}
 
 	public DaoPlacePickup getByPlaceId( String placeId ) {
+		if( placeId == null )
+			return null;
+
 		return contextRepo.findById( placeId ).orElse( null );
 	}
 }

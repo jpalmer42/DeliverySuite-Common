@@ -17,6 +17,9 @@ public class ServicePlaceDropoff {
 	}
 
 	public DaoPlaceDropoff getByPlaceId( String placeId ) {
-		return contextRepo.findById(placeId).orElse( null );	
+		if( placeId == null )
+			return null;
+
+		return contextRepo.findById( placeId ).orElse( null );
 	}
 }

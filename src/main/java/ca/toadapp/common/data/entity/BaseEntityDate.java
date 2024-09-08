@@ -19,15 +19,15 @@ public abstract class BaseEntityDate {
 
 	@Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
-	private LocalDateTime dateCreated;
+	private LocalDateTime	dateCreated;
 
 	@Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", nullable = false)
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
-	private LocalDateTime dateUpdated;
+	private LocalDateTime	dateUpdated;
 
 	@JsonInclude(Include.NON_NULL)
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
-	private LocalDateTime dateEnd = null;
+	private LocalDateTime	dateEnd	= null;
 
 	@PreUpdate
 	@PrePersist

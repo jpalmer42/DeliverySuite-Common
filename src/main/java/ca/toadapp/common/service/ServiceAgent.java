@@ -18,66 +18,67 @@ import jakarta.transaction.Transactional;
 public class ServiceAgent {
 
 	@Autowired
-	private RepoAgent contextRepo;
+	private RepoAgent				contextRepo;
 
 	@Autowired
-	private RepoAgentNotification contextNotificationRepo;
+	private RepoAgentNotification	contextNotificationRepo;
 
 	@Autowired
-	private RepoAgentLocation contextLocationRepo;
+	private RepoAgentLocation		contextLocationRepo;
 
 	@Autowired
-	private ServiceDelCo serviceDelCo;
+	private ServiceDelCo			serviceDelCo;
 
-	public DaoAgent getById(Long agentId) {
-		var response = contextRepo.findById(agentId);
+	public DaoAgent getById( Long agentId ) {
+		var response = contextRepo.findById( agentId );
 
-		return response.orElse(null);
+		return response.orElse( null );
 	}
 
-	public DaoAgent getByAgentId(String uid) {
-		var response = contextRepo.findByAgentId(uid);
+	@Transactional
+	public DaoAgent getByAgentId( String uid ) {
+		var response = contextRepo.findByAgentId( uid );
 
-		return response.orElse(null);
+		return response.orElse( null );
 	}
 
-	public DaoAgent save(DaoAgent agent) {
+	public DaoAgent save( DaoAgent agent ) {
 
 		// Id DelCoId is provided, get the delCo before Save;
-		if (agent.getDeliveryCompanyId() != null) {
-			agent.setDeliveryCompany(serviceDelCo.getById(agent.getDeliveryCompanyId()));
+		if( agent.getDeliveryCompanyId() != null ) {
+			agent.setDeliveryCompany( serviceDelCo.getById( agent.getDeliveryCompanyId() ) );
 		}
 
-		var response = contextRepo.save(agent);
+		var response = contextRepo.save( agent );
 
 		return response;
 	}
 
 	@Transactional
-	public void setOnDuty(Long agentId, Boolean dutyStatus) {
+	public void setOnDuty( Long agentId, Boolean dutyStatus ) {
 		LocalDateTime ldt = dutyStatus == false ? null : LocalDateTime.now();
-		contextRepo.setDutyStatus(agentId, ldt);
+		contextRepo.setDutyStatus( agentId, ldt );
 	}
 
-	public DaoAgentLocation getLocation(Long agentId) {
-		var response = contextLocationRepo.findById(agentId).orElse(null);
+	public DaoAgentLocation getLocation( Long agentId ) {
+		var response = contextLocationRepo.findById( agentId ).orElse( null );
 		return response;
 	}
 
-	public DaoAgentLocation setLocation(DaoAgentLocation agentLocation) {
-		var response = contextLocationRepo.save(agentLocation);
+	public DaoAgentLocation setLocation( DaoAgentLocation agentLocation ) {
+		var response = contextLocationRepo.save( agentLocation );
 		return response;
 	}
 
-	public Collection<DaoAgentNotification> getNotificationConfig(Long agentId) {
-		var response = contextNotificationRepo.findAllByAgentId(agentId);
+	public Collection<DaoAgentNotification> getNotificationConfig( Long agentId ) {
+		var response = contextNotificationRepo.findAllByAgentId( agentId );
 		return response;
 	}
 
-	public Collection<DaoAgentNotification> setNotificationConfig(Collection<DaoAgentNotification> agentNotifications) {
-		if (!agentNotifications.isEmpty()) {
-			contextNotificationRepo.deleteAllByAgentId(agentNotifications.iterator().next().getAgentId());
-			var response = contextNotificationRepo.saveAll(agentNotifications);
+	public Collection<DaoAgentNotification> setNotificationConfig( Collection<DaoAgentNotification> agentNotifications ) {
+		if( !agentNotifications.isEmpty() ) {
+			contextNotificationRepo.deleteAllByAgentId( agentNotifications.iterator().next().getAgentId() );
+			var response = contextNotificationRepo.saveAll( agentNotifications );
 			return response;
 		}
 		return null;

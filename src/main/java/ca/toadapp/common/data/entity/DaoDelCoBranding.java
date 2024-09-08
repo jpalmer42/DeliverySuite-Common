@@ -17,13 +17,13 @@ import lombok.NoArgsConstructor;
 @Table(name = "deliveryCompanyBranding")
 public class DaoDelCoBranding extends BaseEntity {
 
-	private String fontName;
-	private String textColour;
-	private String fgColour;
-	private String bgColour;
-	
-	private String urlLogo;
+	private String	fontName;
+	private String	textColour;
+	private String	fgColour;
+	private String	bgColour;
 
-	private String uriWeb;
-	private String uriMenu;
+	private String	urlLogo;
+
+	private String	uriWeb;
+	private String	uriMenu;
 }

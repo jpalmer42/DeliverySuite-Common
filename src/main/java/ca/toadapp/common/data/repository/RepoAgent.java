@@ -11,10 +11,10 @@ import ca.toadapp.common.data.entity.DaoAgent;
 
 public interface RepoAgent extends JpaRepository<DaoAgent, Long> {
 
-	Optional<DaoAgent> findByAgentId(String uid);
+	Optional<DaoAgent> findByAgentId( String uid );
 
 	@Modifying
 	@Query("UPDATE DaoAgent a set a.onDutySince = :localDateTime where id = :agentId")
-	void setDutyStatus(Long agentId, LocalDateTime localDateTime);
+	void setDutyStatus( Long agentId, LocalDateTime localDateTime );
 
 }

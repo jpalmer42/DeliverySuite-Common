@@ -19,18 +19,18 @@ import lombok.NoArgsConstructor;
 public class DaoDelCoLocation extends BaseEntity {
 
 	@Column(nullable = false)
-	private Double latitude;
+	private Double	latitude;
 	@Column(nullable = false)
-	private Double longitude;
+	private Double	longitude;
 
 	@Column(nullable = false)
-	private Integer radius = 5; // General Serviceable Area from Lat/Lng point
+	private Integer	distanceBase			= 5;	// General Serviceable Area from Lat/Lng point
 
 	@Column(nullable = false)
-	private Double deliveryFeeBase = 5.0; // Fee charged from Pickup to Dropoff
+	private Double	deliveryFeeBase			= 5.0;	// Fee charged from Pickup to Dropoff
 	@Column(nullable = false)
-	private Double deliveryFeeBeyondBase = 1.0; // per Kilometer
+	private Double	deliveryFeeBeyondBase	= 1.0;	// per Kilometer
 
 	@Column(nullable = false)
-	private Double dispatchFee = 1.0; // Fee paid to dispatcher.
+	private Double	dispatchFee				= 1.0;	// Fee paid to dispatcher.
 }

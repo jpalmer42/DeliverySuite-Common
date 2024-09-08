@@ -24,35 +24,38 @@ import lombok.EqualsAndHashCode;
 public class DaoDelCo extends BaseEntity {
 
 	@Column(unique = true)
-	private String companyCode; // Used as part of the agent signon.
+	private String							companyCode;				// Used as part of the agent signon.
 
-	private String name;
-	private String address;
-	private String phone;
+	private String							name;
+	private String							address;
+	private String							phone;
 
 	@Column(nullable = false, columnDefinition = "bool default 'false'")
-	private Boolean hasDeliveryOnDemand = false;
+	private Boolean							hasDeliveryOnDemand	= false;
+
+	@Column(nullable = false, columnDefinition = "bool default 'false'")
+	private Boolean							hasAutoDispatch		= false;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "dispatcherId", updatable = false, insertable = false)
-	private DaoAgent dispatcher;
+	private DaoAgent						dispatcher;
 
-	@Column(name = "dispatcherId")//, updatable = false, insertable = false)
-	private Long dispatcherId;
-
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "delCoId") // Service must read if not present, updatable = false, insertable = false)
-	private Collection<DaoDelCoLocation> serviceAreas;
+	@Column(name = "dispatcherId") // , updatable = false, insertable = false)
+	private Long							dispatcherId;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "delCoId") // Service must read if not present, updatable = false, insertable = false)
-	private Collection<DaoDelCoHour> hours;
+	private Collection<DaoDelCoLocation>	serviceAreas;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "delCoId") // Service must read if not present, updatable = false, insertable = false)
+	private Collection<DaoDelCoHour>		hours;
 
 	@Convert(converter = ConverterLongCollection.class)
-	private Collection<Long> deliveryTypes;
+	private Collection<Long>				deliveryTypes;
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "brandingId")// Service must read if not present, updatable = false, insertable = false)
-	private DaoDelCoBranding branding;
+	@JoinColumn(name = "brandingId") // Service must read if not present, updatable = false, insertable = false)
+	private DaoDelCoBranding				branding;
 
 }

@@ -22,25 +22,24 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 
 @Entity
-@Table(name = "agent_notifications", uniqueConstraints = {
-		@UniqueConstraint(columnNames = { "agent_id", "method", "target" }) })
+@Table(name = "agent_notifications", uniqueConstraints = { @UniqueConstraint(columnNames = { "agent_id", "method", "target" }) })
 public class DaoAgentNotification extends BaseEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "agentId", updatable = false, insertable = false)
-	private DaoAgent agent;
+	private DaoAgent			agent;
 
-	@Column(name = "agentId")//, updatable = false, insertable = false)
-	private Long agentId;
+	@Column(name = "agentId") // , updatable = false, insertable = false)
+	private Long				agentId;
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, columnDefinition = "varchar(255) default 'none'")
-	private NotificationTypes method = NotificationTypes.none; // none, sms, gcm
-	
+	private NotificationTypes	method	= NotificationTypes.none;	// none, sms, gcm
+
 	@Column(nullable = false)
-	private String target; // Cell # or GCM Token
+	private String				target;								// Cell # or GCM Token
 
 	@Column(nullable = false, columnDefinition = "bool default 'true'")
-	private Boolean enabled = true;
+	private Boolean				enabled	= true;
 
 }

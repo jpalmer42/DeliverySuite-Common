@@ -30,33 +30,33 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "agents")
 public class DaoAgent extends BaseEntity {
-	private String agentId; // name@delCo`
+	private String					agentId;					// name@delCo`
 
 	@Convert(converter = ConverterAgentRolesCollection.class)
-	private Collection<AgentRoles> agentRoles;
+	private Collection<AgentRoles>	agentRoles;
 
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
-	private LocalDateTime onDutySince;
+	private LocalDateTime			onDutySince;
 
-	private String name;
-	private String address;
-	private String phone;
+	private String					name;
+	private String					address;
+	private String					phone;
 
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY) // TODO: Make LAZY
 	@JoinColumn(name = "deliveryCompanyId", updatable = false, insertable = false)
-	private DaoDelCo deliveryCompany;
+	private DaoDelCo				deliveryCompany;
 
-	@Column(name = "deliveryCompanyId")//, updatable = false, insertable = false)
-	private Long deliveryCompanyId;
-
-	@Column(nullable = false, columnDefinition = "bool default 'false'")
-	private Boolean acceptAutoDispatch = false;
+	@Column(name = "deliveryCompanyId")
+	private Long					deliveryCompanyId;
 
 	@Column(nullable = false, columnDefinition = "bool default 'false'")
-	private Boolean hasSmartServe = false;
+	private Boolean					acceptAutoDispatch	= false;
 
 	@Column(nullable = false, columnDefinition = "bool default 'false'")
-	private Boolean hasPaymentMachine = false;
+	private Boolean					hasSmartServe		= false;
+
+	@Column(nullable = false, columnDefinition = "bool default 'false'")
+	private Boolean					hasPaymentMachine	= false;
 
 }

@@ -10,22 +10,22 @@ public class ConverterAgentRolesCollection implements AttributeConverter<Collect
 	private static final String SPLIT_CHAR = ";";
 
 	@Override
-	public String convertToDatabaseColumn(Collection<AgentRoles> attribute) {
+	public String convertToDatabaseColumn( Collection<AgentRoles> attribute ) {
 		StringBuilder response = new StringBuilder();
-		for (AgentRoles val : attribute) {
-			response.append(SPLIT_CHAR);
-			response.append(val.name());
+		for( AgentRoles val : attribute ) {
+			response.append( SPLIT_CHAR );
+			response.append( val.name() );
 		}
-		response.deleteCharAt(0);
+		response.deleteCharAt( 0 );
 		return response.toString();
 	}
 
 	@Override
-	public Collection<AgentRoles> convertToEntityAttribute(String dbData) {
-		String[] listOfStrings = dbData.split(SPLIT_CHAR);
+	public Collection<AgentRoles> convertToEntityAttribute( String dbData ) {
+		String[] listOfStrings = dbData.split( SPLIT_CHAR );
 		Collection<AgentRoles> response = new ArrayList<>();
-		for (String val : listOfStrings) {
-			response.add(AgentRoles.valueOf(val));
+		for( String val : listOfStrings ) {
+			response.add( AgentRoles.valueOf( val ) );
 		}
 		return response;
 	}

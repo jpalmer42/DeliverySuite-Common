@@ -19,7 +19,7 @@ public class ServiceDeliveryTypes {
 		return deliveryTypes.findAll();
 	}
 
-	public Collection<DaoDeliveryType> saveAll(ArrayList<DaoDeliveryType> delTypes) {
-		return deliveryTypes.saveAll(delTypes);
+	public Collection<DaoDeliveryType> saveAll( ArrayList<DaoDeliveryType> delTypes ) {
+		return deliveryTypes.saveAll( delTypes );
 	}
 }
