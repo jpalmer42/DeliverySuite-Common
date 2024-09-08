@@ -15,4 +15,8 @@ public class ServicePlaceDropoff {
 	public DaoPlaceDropoff save( DaoPlaceDropoff dropoff ) {
 		return contextRepo.save( dropoff );
 	}
+
+	public DaoPlaceDropoff getByPlaceId( String placeId ) {
+		return contextRepo.findById(placeId).orElse( null );	
+	}
 }

@@ -15,4 +15,8 @@ public class ServicePlacePickup {
 	public DaoPlacePickup save( DaoPlacePickup pickup ) {
 		return contextRepo.save( pickup );
 	}
+
+	public DaoPlacePickup getByPlaceId( String placeId ) {
+		return contextRepo.findById( placeId ).orElse( null );
+	}
 }
