@@ -1,5 +1,7 @@
 package ca.toadapp.common.service;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -7,6 +9,7 @@ import ca.toadapp.common.data.entity.DaoDelCo;
 import ca.toadapp.common.data.entity.DaoItem;
 import ca.toadapp.common.data.entity.DaoPlaceDropoff;
 import ca.toadapp.common.data.entity.DaoPlacePickup;
+import ca.toadapp.common.data.enumeration.DeliveryState;
 import ca.toadapp.common.data.enumeration.PaymentTypes;
 import ca.toadapp.common.data.repository.RepoItem;
 import ca.toadapp.common.exceptions.MissingDataException;
@@ -56,11 +59,16 @@ public class ServiceItem {
 		item.setPickupPlace( pickup );
 		item.setDropoffPlace( dropoff );
 		item.setAutoAssignDriver( delCo.getHasAutoDispatch() );
+		item.setAssignmentInitial( LocalDateTime.now() );
 
 		// Dropoff can be left unassigned, default values will be assigned.
 		calcFees( item, delCo, pickup, dropoff );
 
-		return contextRepo.save( item );
+		final var ret = contextRepo.save( item );
+
+		calcTime( item, DeliveryState.assignmentInitial );
+
+		return ret;
 	}
 
 	private void calcFees( DaoItem item, DaoDelCo delCo, DaoPlacePickup pickup, DaoPlaceDropoff dropoff ) throws RecordNotFoundException {
@@ -91,6 +99,129 @@ public class ServiceItem {
 			item.setDeliveryFee( item.getDeliveryFee() + overageFee );
 		}
 
+	}
+
+	@Transactional
+	public DaoItem assignDriver( Long itemId, Long driverId ) throws MissingDataException, RecordNotFoundException {
+		if( itemId == null )
+			throw new MissingDataException( "itemId must not be null" );
+		if( driverId == null )
+			throw new MissingDataException( "driverId must not be null" );
+
+		var item = contextRepo.findById( itemId ).orElse( null );
+		if( item == null )
+			throw new RecordNotFoundException( String.format( "Item [%ld] not found", itemId ) );
+
+		if( driverId != item.getDriverId() ) {
+			// TODO: Notify old driver
+		}
+		item.setDriverId( driverId );
+
+		calcTime( item, DeliveryState.assignmentInitial );
+
+		return contextRepo.save( item );
+
+//		contextRepo.assignDriver( itemId, driverId );
+	}
+
+	@Transactional
+	public DaoItem updateDeliveryState( Long itemId, DeliveryState state ) throws RecordNotFoundException, MissingDataException {
+		if( itemId == null )
+			throw new MissingDataException( "itemId must not be null" );
+
+		var item = contextRepo.findById( itemId ).orElse( null );
+		if( item == null )
+			throw new RecordNotFoundException( String.format( "Item [%ld] not found", itemId ) );
+
+		calcTime( item, state );
+
+		return contextRepo.save( item );
+	}
+
+	private void calcTime( DaoItem item, DeliveryState state ) {
+		var now = LocalDateTime.now();
+
+		switch ( state ) {
+			case requestCancelled:
+				item.setRequestCancelled( now );
+			// TODO: Cancellation Notification
+			break;
+
+			case requestInitial:
+				item.setRequestInitial( now );
+				if( item.getAssignmentAcknowledged() == null ) {
+					// TODO: Notify Dispatcher
+				}
+				item.setAssignmentInitial( null );
+				item.setAssignmentAcknowledged( null );
+				item.setOnRouteInitial( null );
+				item.setOnRouteETA( null );
+				item.setPackagePickedUp( null );
+				item.setPackageDeliveryETA( null );
+				item.setPackageDelivered( null );
+			break;
+
+			case requestAcknowledged:
+				item.setRequestAcknowledged( now );
+				item.setAssignmentInitial( null );
+				item.setAssignmentAcknowledged( null );
+				item.setOnRouteInitial( null );
+				item.setOnRouteETA( null );
+				item.setPackagePickedUp( null );
+				item.setPackageDeliveryETA( null );
+				item.setPackageDelivered( null );
+			break;
+
+			case assignmentInitial:
+				item.setAssignmentInitial( now );
+				// TODO: Assignment Notification
+				item.setAssignmentAcknowledged( null );
+				item.setOnRouteInitial( null );
+				item.setOnRouteETA( null );
+				item.setPackagePickedUp( null );
+				item.setPackageDeliveryETA( null );
+				item.setPackageDelivered( null );
+			break;
+
+			case assignmentAcknowledged:
+				item.setAssignmentAcknowledged( now );
+				item.setOnRouteInitial( null );
+				item.setOnRouteETA( null );
+				item.setPackagePickedUp( null );
+				item.setPackageDeliveryETA( null );
+				item.setPackageDelivered( null );
+			break;
+
+			case onRouteInitial:
+				item.setOnRouteInitial( now );
+				item.setOnRouteETA( null );
+				item.setPackagePickedUp( null );
+				item.setPackageDeliveryETA( null );
+				item.setPackageDelivered( null );
+			break;
+
+			case onRouteETA:
+				item.setOnRouteETA( now );
+				item.setPackagePickedUp( null );
+				item.setPackageDeliveryETA( null );
+				item.setPackageDelivered( null );
+			break;
+
+			case packagePickedUp:
+				item.setPackagePickedUp( now );
+				item.setPackageDeliveryETA( null );
+				item.setPackageDelivered( null );
+			break;
+
+			case packageDeliveryETA:
+				item.setPackageDeliveryETA( now );
+				item.setPackageDelivered( null );
+			break;
+
+			case packageDelivered:
+				item.setPackageDelivered( now );
+			break;
+		}
 	}
 
 }
