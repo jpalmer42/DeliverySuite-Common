@@ -79,7 +79,7 @@ public class ServiceItem {
 		// Calculate Distance and delivery cost
 		var serviceArea = serviceDelCo.findServiceArea( delCo.getServiceAreas(), pickup.getLatitude(), pickup.getLongitude() );
 		if( serviceArea == null ) {
-			throw new RecordNotFoundException( String.format( "No DelCoLocations Defined for [%ld]", delCo.getId() ) );
+			throw new RecordNotFoundException( String.format( "No DelCoLocations Defined for [%d]", delCo.getId() ) );
 		}
 
 		if( pickup.getOnAccount() && pickup.getDeliveryCompanyId() == delCo.getId() ) {
@@ -113,7 +113,7 @@ public class ServiceItem {
 
 		var item = contextRepo.findById( itemId ).orElse( null );
 		if( item == null )
-			throw new RecordNotFoundException( String.format( "Item [%ld] not found", itemId ) );
+			throw new RecordNotFoundException( String.format( "Item [%d] not found", itemId ) );
 
 		if( driverId != item.getDriverId() ) {
 			var text = "Request transferred to another Agent";
@@ -134,7 +134,7 @@ public class ServiceItem {
 
 		var item = contextRepo.findById( itemId ).orElse( null );
 		if( item == null )
-			throw new RecordNotFoundException( String.format( "Item [%ld] not found", itemId ) );
+			throw new RecordNotFoundException( String.format( "Item [%d] not found", itemId ) );
 
 		calcTime( item, state );
 
