@@ -33,6 +33,9 @@ public class ServiceItem {
 	@Autowired
 	private ServiceLocation		serviceLocation;
 
+	@Autowired
+	private ServiceNotification	serviceNotification;
+
 	@Transactional
 	public DaoItem save( DaoItem item ) throws MissingDataException, RecordNotFoundException {
 		// Validate dropoff & pickup
@@ -113,15 +116,15 @@ public class ServiceItem {
 			throw new RecordNotFoundException( String.format( "Item [%ld] not found", itemId ) );
 
 		if( driverId != item.getDriverId() ) {
-			// TODO: Notify old driver
+			var text = "Request transferred to another Agent";
+			serviceNotification.sendMessage( null, driverId, text );
+			// TODO: Notify old driver pickup/dropoff info1
 		}
 		item.setDriverId( driverId );
 
 		calcTime( item, DeliveryState.assignmentInitial );
 
 		return contextRepo.save( item );
-
-//		contextRepo.assignDriver( itemId, driverId );
 	}
 
 	@Transactional
@@ -140,17 +143,25 @@ public class ServiceItem {
 
 	private void calcTime( DaoItem item, DeliveryState state ) {
 		var now = LocalDateTime.now();
+		var agentId = item.getDriverId();
+		var delCoId = item.getDeliveryCompanyId();
 
 		switch ( state ) {
 			case requestCancelled:
 				item.setRequestCancelled( now );
-			// TODO: Cancellation Notification
+				if( agentId != null ) {
+					var text = "Request Cancelled"; // TODO: More detail required
+					serviceNotification.sendMessage( null, agentId, text );
+				}
 			break;
 
 			case requestInitial:
 				item.setRequestInitial( now );
 				if( item.getAssignmentAcknowledged() == null ) {
+					var text = "Notify Dispatcher of request"; // TODO: More detail required
+					serviceNotification.sendMessage( delCoId, null, text );
 					// TODO: Notify Dispatcher
+					// TODO: Except if auto-dispatch
 				}
 				item.setAssignmentInitial( null );
 				item.setAssignmentAcknowledged( null );
@@ -174,7 +185,10 @@ public class ServiceItem {
 
 			case assignmentInitial:
 				item.setAssignmentInitial( now );
-				// TODO: Assignment Notification
+				if( agentId != null ) {
+					var text = "Assignment"; // TODO: More detail required
+					serviceNotification.sendMessage( null, agentId, text );
+				}
 				item.setAssignmentAcknowledged( null );
 				item.setOnRouteInitial( null );
 				item.setOnRouteETA( null );
@@ -223,5 +237,4 @@ public class ServiceItem {
 			break;
 		}
 	}
-
 }
