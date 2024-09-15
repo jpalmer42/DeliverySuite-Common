@@ -18,7 +18,7 @@ public class ServiceLocation {
 	private static final Double	R		= 6372.8;		// Radius of the earth in kilometers @ 30deg North
 	private static final Double	PI180	= Math.PI / 180;
 
-	@Value("${google.geo.apiKey:na}")
+	@Value("${map.apiKey:na}")
 	private String				apiKey;
 
 	private GeoApiContext		apiContext;
